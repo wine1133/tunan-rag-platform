@@ -1,0 +1,301 @@
+/* =============================================================
+   管理端整体外观
+   顶栏走浅色（白底 + 细分割线），侧边栏走深墨蓝，内容区浅灰。
+   颜色统一写成 CSS 变量，换配色只改这一处。
+   ============================================================= */
+.manager-container {
+    /* 品牌主色，和 index.scss 里 Element Plus 的 primary 保持一致 */
+    --m-primary: #2563eb;
+    /* 侧边栏 */
+    --m-side-bg: #111827;
+    --m-side-bg-2: #172033;
+    --m-side-text: #a9b4c6;
+    --m-side-text-hover: #ffffff;
+    /* 顶栏跟侧边栏同色，两块导航连成一片 */
+    --m-head-bg: #111827;
+    --m-head-border: rgba(255, 255, 255, .07);
+    --m-head-text: #e8ecf3;
+    --m-head-text-weak: #8f9bb0;
+    /* 内容区 */
+    --m-border: #e6e9f0;
+    --m-text: #1f2937;
+    --m-text-weak: #6b7280;
+    --m-body-bg: #f4f6fa;
+
+    --m-head-h: 60px;
+    --m-side-w: 220px;
+
+    background-color: var(--m-body-bg);
+    min-height: 100vh;
+}
+
+/* ---------- 顶栏 ---------- */
+.manager-header {
+    height: var(--m-head-h);
+    background-color: var(--m-head-bg);
+    border-bottom: 1px solid var(--m-head-border);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.manager-header-left {
+    width: var(--m-side-w);
+    height: 100%;
+    padding-left: 18px;
+    display: flex;
+    align-items: center;
+    /* 和侧边栏同宽，靠一条浅分隔线收边 */
+    border-right: 1px solid var(--m-head-border);
+}
+
+.manager-header-left img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.manager-header-left .title {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .5px;
+    margin-left: 9px;
+    color: var(--m-head-text);
+    white-space: nowrap;
+}
+
+.manager-header-center {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.manager-header-right .user-name {
+    margin-left: 8px;
+    font-size: 14px;
+    color: var(--m-head-text);
+}
+
+.manager-header-right .user-box {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 12px;
+    margin-right: 12px;
+    border-radius: 19px;
+    transition: background-color .2s;
+}
+
+.manager-header-right .user-box:hover {
+    background-color: rgba(255, 255, 255, .08);
+}
+
+.manager-header-right .user-box img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: rgba(255, 255, 255, .12);
+}
+
+/* ---------- 主体两栏 ---------- */
+.manager-main-left {
+    /* Element Plus 菜单本身就是靠这几个 CSS 变量取色的。CSS 变量会往下继承，
+       不受 scoped 作用域限制，所以底色、字色优先在这里改，比堆选择器可靠。 */
+    --el-menu-bg-color: transparent;
+    --el-menu-border-color: transparent;
+    --el-menu-text-color: var(--m-side-text);
+    --el-menu-hover-bg-color: rgba(255, 255, 255, .06);
+    --el-menu-hover-text-color: var(--m-side-text-hover);
+    --el-menu-active-color: #ffffff;
+    --el-menu-item-height: 42px;
+    --el-menu-sub-item-height: 38px;
+    --el-menu-item-font-size: 14px;
+    --el-menu-base-level-padding: 14px;
+
+    width: var(--m-side-w);
+    min-height: calc(100vh - var(--m-head-h));
+    background: linear-gradient(180deg, var(--m-side-bg) 0%, var(--m-side-bg-2) 100%);
+    padding: 10px 8px;
+}
+
+.manager-main-right {
+    flex: 1;
+    /* width:0 配合 flex:1，防止表格内容把右侧撑出横向滚动条 */
+    width: 0;
+    background-color: var(--m-body-bg);
+    padding: 14px;
+}
+
+/* =============================================================
+   Element Plus 样式覆盖
+   ============================================================= */
+
+/* ---------- 侧边菜单 ----------
+   注意：el-menu / el-sub-menu 内部渲染的元素（ul.el-menu--inline、
+   .el-sub-menu__title 等）拿不到 scoped 的 data-v 属性，所有菜单相关的
+   选择器必须写 :deep()，否则只有模板里直接写的 el-menu-item 会命中，
+   子菜单会露出 Element 默认的白色底。 */
+:deep(.el-menu) {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+}
+
+/* 分组容器和展开后的二级列表都不上色，底色统一由侧边栏那层渐变提供。
+   Element 会给展开/含选中项的 el-sub-menu 也加 is-active，如果按
+   .is-active 统一上色，整个分组会被涂成一大块。 */
+:deep(.el-sub-menu),
+:deep(.el-menu--inline),
+:deep(.el-sub-menu .el-menu) {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+/* 一级项、分组标题共用一套外观：圆角块 + 悬停变亮 */
+:deep(.el-menu-item),
+:deep(.el-sub-menu__title) {
+    height: 42px;
+    line-height: 42px;
+    margin: 1px 0;
+    padding-right: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--m-side-text) !important;
+    background-color: transparent !important;
+    transition: background-color .18s, color .18s;
+}
+
+:deep(.el-menu-item:hover),
+:deep(.el-sub-menu__title:hover) {
+    color: var(--m-side-text-hover) !important;
+    background-color: rgba(255, 255, 255, .06) !important;
+}
+
+/* 分组标题：展开时只把字提亮，不加底色 */
+:deep(.el-sub-menu) {
+    margin-top: 6px;
+}
+
+:deep(.el-sub-menu__title) {
+    color: #dbe2ec !important;
+    font-weight: 500;
+}
+
+/* 当前分组：标题给个更亮的白，一眼看出人在哪一组 */
+:deep(.el-sub-menu.is-active > .el-sub-menu__title) {
+    color: #ffffff !important;
+}
+
+:deep(.el-sub-menu__icon-arrow) {
+    color: #7c8aa0;
+}
+
+:deep(.el-menu-item .el-icon),
+:deep(.el-sub-menu__title .el-icon) {
+    font-size: 16px;
+    width: 16px;
+}
+
+/* 二级项缩进，靠左边一条竖线把同组串起来 */
+:deep(.el-menu--inline .el-menu-item) {
+    height: 38px;
+    line-height: 38px;
+    font-size: 13px;
+    padding-left: 40px !important;
+    margin-left: 17px;
+    border-left: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 0 6px 6px 0;
+}
+
+/* 当前页：只作用在真正的菜单项上，不波及父级分组 */
+:deep(.el-menu-item.is-active) {
+    color: #fff !important;
+    background-color: var(--m-primary) !important;
+    border-left-color: var(--m-primary);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, .35);
+}
+
+:deep(.el-tooltip__trigger) {
+    outline: none;
+}
+
+/* ---------- 面包屑（顶栏是深色，字要走浅色一档） ---------- */
+:deep(.el-breadcrumb) {
+    font-size: 14px;
+}
+
+:deep(.el-breadcrumb__inner) {
+    color: var(--m-head-text-weak) !important;
+    font-weight: 400 !important;
+}
+
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner) {
+    color: var(--m-head-text) !important;
+    font-weight: 500 !important;
+}
+
+:deep(.el-breadcrumb__separator) {
+    color: #5b6678 !important;
+}
+
+/* ---------- 内容区里的通用控件 ---------- */
+/* 卡片、表格、按钮统一轻圆角 + 淡边框，去掉脚手架的重阴影 */
+.manager-main-right :deep(.card) {
+    border: 1px solid var(--m-border);
+    border-radius: 8px;
+    padding: 14px;
+    box-shadow: none;
+}
+
+.manager-main-right :deep(.el-card) {
+    border: 1px solid var(--m-border);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.manager-main-right :deep(.el-table th.el-table__cell) {
+    background-color: #f7f8fc;
+    color: var(--m-text);
+    font-weight: 600;
+}
+
+.manager-main-right :deep(.el-button) {
+    border-radius: 6px;
+}
+
+/* 各页面的“重置”统一用的是 warning 类型，实心橙在列表页里过于抢眼。
+   这里只改观感，不动各页面模板上的 type，避免逐个文件改。 */
+.manager-main-right :deep(.el-button--warning) {
+    color: #6b7280;
+    background-color: #fff;
+    border-color: #dcdfe6;
+}
+
+.manager-main-right :deep(.el-button--warning:hover) {
+    color: var(--el-color-warning);
+    background-color: var(--el-color-warning-light-9);
+    border-color: var(--el-color-warning-light-5);
+}
+
+.manager-main-right :deep(.el-input__wrapper),
+.manager-main-right :deep(.el-select__wrapper) {
+    border-radius: 6px;
+}
+
+/* ---------- 滚动条 ---------- */
+.manager-main-right::-webkit-scrollbar,
+.manager-main-left::-webkit-scrollbar {
+    width: 8px;
+}
+
+.manager-main-left::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .14);
+    border-radius: 4px;
+}
+
+.manager-main-right::-webkit-scrollbar-thumb {
+    background-color: #d3d8e3;
+    border-radius: 4px;
+}

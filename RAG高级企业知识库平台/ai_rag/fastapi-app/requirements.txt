@@ -1,0 +1,72 @@
+# =============================================================
+# AI RAG Knowledge Base Platform - backend requirements
+#
+# Python 3.12.10
+#
+# All versions are pinned. Do not use ~= or >=.
+# LangChain moves fast: the tutorial code is written against
+# exactly the versions listed below.
+#
+# Install (run inside the fastapi-app directory):
+#   python -m venv .venv
+#   .venv\Scripts\activate
+#   pip install -r requirements.txt
+#
+# NOTE: keep this file ASCII-only. Old pip (<= 23.x) on Chinese
+# Windows decodes requirements.txt with the GBK locale codec and
+# crashes on UTF-8 comments (UnicodeDecodeError: 'gbk' codec ...).
+# =============================================================
+
+# ---------- Web framework / runtime ----------
+fastapi==0.141.1
+uvicorn==0.53.0
+python-multipart==0.0.32
+pydantic==2.13.5
+sse-starlette==3.4.11
+
+# ---------- Database / ORM ----------
+tortoise-orm==1.1.8
+aiomysql==0.3.2
+psycopg==3.3.5
+psycopg-binary==3.3.5
+pgvector==0.3.6
+
+# ---------- Auth ----------
+PyJWT==2.13.0
+cryptography==50.0.1
+
+# ---------- LangChain ----------
+# langchain-openai talks to Bailian via its OpenAI-compatible API
+# (chat model + embedding model). Bailian's rerank model has no
+# OpenAI-compatible endpoint, so we call DashScope directly with httpx.
+langchain==1.4.2
+langchain-core==1.6.4
+langchain-openai==1.6.5
+langchain-text-splitters==1.1.2
+langchain-postgres==0.0.17
+langgraph==1.2.12
+langgraph-checkpoint==4.2.0
+# Required by langchain-core. Not used directly; pinned only to avoid surprise upgrades.
+langsmith==0.12.0
+httpx==0.28.1
+
+# ---------- Retrieval ----------
+# BM25 keyword search is implemented with rank_bm25 directly,
+# so we do not depend on the unmaintained langchain-community.
+rank-bm25==0.2.2
+# Chinese word segmentation, required before BM25 scoring.
+jieba==0.42.1
+numpy==2.5.3
+
+# ---------- Document parsing ----------
+pymupdf==1.28.2
+pdfplumber==0.11.10
+python-docx==1.2.0
+openpyxl==3.1.5
+# OCR for scanned files, CPU-only inference, no GPU needed.
+rapidocr-onnxruntime==1.4.4
+onnxruntime==1.29.0
+
+# ---------- Testing ----------
+pytest==9.1.1
+pytest-asyncio==1.4.0

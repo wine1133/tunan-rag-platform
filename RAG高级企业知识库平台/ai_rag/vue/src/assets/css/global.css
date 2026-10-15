@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
+
+.line1 {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* 超出几行省略 */
+    overflow: hidden;
+}
+ .line2 {
+     word-break: break-all;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 2; /* 超出几行省略 */
+     overflow: hidden;
+ }
+.line3 {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* 超出几行省略 */
+    overflow: hidden;
+}
+
+.line4 {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4; /* 超出几行省略 */
+    overflow: hidden;
+}
+
+
+.dark1{
+    width: 20%;
+    text-align: center;
+}
+
+/* =============================================================
+   Element Plus 主题色覆盖
+   main.js 引的是 element-plus/dist/index.css（预编译好的默认主题），
+   SCSS 变量那一层改不动它，所以直接覆盖它读的 CSS 变量。
+   -light-N 是往白里混 N0%，-dark-2 是往黑里混 20%，
+   浅色按钮、hover 底色、标签背景都由这几档派生色决定，必须一起给全。
+   这个文件在 main.js 里排在 element 的样式之后，覆盖才生效。
+   ============================================================= */
+:root {
+    --el-color-primary: #2563eb;
+    --el-color-primary-light-3: #6692f1;
+    --el-color-primary-light-5: #92b1f5;
+    --el-color-primary-light-7: #bed0f9;
+    --el-color-primary-light-8: #d3e0fb;
+    --el-color-primary-light-9: #e9effd;
+    --el-color-primary-dark-2: #1e4fbc;
+    --el-color-success: #16a34a;
+    --el-color-success-light-3: #5cbf80;
+    --el-color-success-light-5: #8ad1a4;
+    --el-color-success-light-7: #b9e3c9;
+    --el-color-success-light-8: #d0eddb;
+    --el-color-success-light-9: #e8f6ed;
+    --el-color-success-dark-2: #12823b;
+    --el-color-warning: #d97706;
+    --el-color-warning-light-3: #e4a051;
+    --el-color-warning-light-5: #ecbb82;
+    --el-color-warning-light-7: #f4d6b4;
+    --el-color-warning-light-8: #f7e4cd;
+    --el-color-warning-light-9: #fbf1e6;
+    --el-color-warning-dark-2: #ae5f05;
+    --el-color-danger: #dc2626;
+    --el-color-danger-light-3: #e66767;
+    --el-color-danger-light-5: #ee9292;
+    --el-color-danger-light-7: #f4bebe;
+    --el-color-danger-light-8: #f8d4d4;
+    --el-color-danger-light-9: #fce9e9;
+    --el-color-danger-dark-2: #b01e1e;
+    --el-color-error: #dc2626;
+    --el-color-error-light-3: #e66767;
+    --el-color-error-light-5: #ee9292;
+    --el-color-error-light-7: #f4bebe;
+    --el-color-error-light-8: #f8d4d4;
+    --el-color-error-light-9: #fce9e9;
+    --el-color-error-dark-2: #b01e1e;
+    --el-color-info: #64748b;
+    --el-color-info-light-3: #929eae;
+    --el-color-info-light-5: #b2bac5;
+    --el-color-info-light-7: #d0d5dc;
+    --el-color-info-light-8: #e0e3e8;
+    --el-color-info-light-9: #f0f1f3;
+    --el-color-info-dark-2: #505d6f;
+}
+
+/* =============================================================
+   表格列的 show-overflow-tooltip 弹层
+   el-popper 挂在 body 下，组件里的 scoped 样式够不着，只能写在全局。
+   不限制宽度时，一整段长文本会拉成横跨整屏的一行，很难读，
+   这里把宽度收在视口的 38% 以内，超出的部分换行显示。
+   ============================================================= */
+.el-popper.is-dark {
+    max-width: 38vw;
+    line-height: 1.7;
+    /* 默认是 nowrap，配合 max-width 才能真正换行 */
+    white-space: normal !important;
+    word-break: break-word;
+}
